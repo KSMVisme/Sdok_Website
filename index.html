@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Działań: Od Kulis | Warsztaty Medialne</title>
+    <title>Studio Działań : Od Kulis | Warsztaty Medialne</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- ZMIENNE --- */
@@ -19,7 +19,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Blokada przewijania dla body - przewija się tylko wrapper */
         html, body {
             height: 100%;
             overflow: hidden;
@@ -43,21 +42,74 @@
             height: var(--header-height);
             width: 100%;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            position: fixed; /* Zawsze na wierzchu */
+            position: fixed;
             top: 0;
             left: 0;
-            background: rgba(255,255,255,0.95); /* Lekka przezroczystość */
-            backdrop-filter: blur(5px); /* Efekt rozmycia tła pod menu */
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             display: flex;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         nav { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; text-transform: uppercase; }
+
+        /* --- LOGO ANIMOWANE (POPRAWIONE) --- */
+        .logo {
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px; /* Stała wysokość */
+            min-width: 150px; /* Rezerwujemy miejsce */
+        }
+
+        .logo span {
+            display: block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Płynne przejście */
+            white-space: nowrap;
+        }
+
+        /* DŁUGIE LOGO (Domyślnie widoczne) */
+        .logo-full {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative; /* Pozostaje w przepływie */
+        }
+
+        /* KRÓTKIE LOGO (Domyślnie ukryte) */
+        .logo-short {
+            position: absolute;
+            left: 0; /* Na desktopie wyrównane do lewej */
+            opacity: 0;
+            transform: translateY(10px); /* Lekko w dół */
+            pointer-events: none; /* Nieklikalne gdy ukryte */
+            color: var(--accent-color); /* Opcjonalnie: wyróżnienie kolorem */
+        }
+
+        /* --- STAN .SHRUNK (Przewinięty) --- */
+
+        /* Ukrywamy długie */
+        .logo.shrunk .logo-full {
+            opacity: 0;
+            transform: translateY(-10px); /* Ucieka w górę */
+            pointer-events: none;
+        }
+
+        /* Pokazujemy krótkie */
+        .logo.shrunk .logo-short {
+            opacity: 1;
+            transform: translateY(0); /* Wjeżdża na miejsce */
+            pointer-events: auto;
+        }
+
         .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-color); font-size: 0.9rem; }
 
-        /* --- SCROLL SNAP CONTAINER --- */
+        /* --- SCROLL WRAPPER --- */
         .scroll-wrapper {
             height: 100vh;
             overflow-y: auto;
@@ -66,19 +118,16 @@
             scroll-behavior: smooth;
         }
 
-        /* --- SEKCJE (POPRAWIONE) --- */
         section {
             min-height: 100vh;
             scroll-snap-align: start;
-            /* USUNIĘTO PADDING I MARGIN - brak "luzu" */
             position: relative;
-
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centrowanie pionowe treści */
+            justify-content: center;
         }
 
-        /* --- TYPOGRAFIA --- */
+        /* --- TYPOGRAFIA I UI --- */
         h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
         h1 { font-size: 3rem; letter-spacing: -1px; }
         h2 { font-size: 2.5rem; margin-bottom: 2rem; }
@@ -114,23 +163,10 @@
             grid-template-columns: 1fr 1fr;
             gap: 40px;
             align-content: center;
-            /* Opcjonalnie: padding boczny, żeby treść nie dotykała krawędzi na ultra-szerokich ekranach,
-               ale container to załatwia. */
         }
-
         .hero-content p { font-size: 1.2rem; color: var(--gray-dark); margin-bottom: 2rem; max-width: 480px; }
-
-        /* Zdjęcie Hero - pełne wypełnienie kontenera */
-        .hero-image {
-            height: 400px;
-            width: 100%;
-        }
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+        .hero-image { height: 400px; width: 100%; }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
         /* --- INNE SEKCJE --- */
         .about { background-color: var(--gray-light); }
@@ -140,14 +176,7 @@
         .team { background-color: #111; color: #fff; }
         .team h2 { color: #fff; }
         .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 40px; }
-
-        .member-card img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            background-color: #333;
-            margin-bottom: 15px;
-        }
+        .member-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background-color: #333; margin-bottom: 15px; }
         .member-role { color: #999; font-size: 0.9rem; margin-bottom: 10px; display: block; }
         .member-bio { font-size: 0.85rem; color: #ccc; line-height: 1.5; }
 
@@ -170,21 +199,35 @@
             background: #fff;
         }
 
-        /* --- RESPONSYWNOŚĆ --- */
+        /* --- MOBILE & TABLET (Poniżej 768px) --- */
         @media (max-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                /* Na mobilkach dodajemy padding, bo header zajmuje relatywnie więcej miejsca */
-                padding-top: 100px;
-            }
-            .hero-image { width: 100%; height: auto; max-height: 300px; margin-top: 20px;}
+            html, body { height: auto; overflow-y: auto; overflow-x: hidden; }
+            .scroll-wrapper { height: auto; overflow: visible; scroll-snap-type: none; }
+            section { min-height: auto; height: auto; scroll-snap-align: none; padding-top: 80px; padding-bottom: 60px; display: block; }
+
+            .hero { padding-top: 140px; grid-template-columns: 1fr; text-align: center; display: flex; flex-direction: column; }
+            .hero-image { width: 90%; height: 200px; margin: 20px auto 0; }
+            .member-card img { width: 70%; max-width: 250px; margin: 0 auto 15px; }
+
             nav { flex-direction: column; gap: 10px; }
             h1 { font-size: 2.2rem; }
-            /* Na mobilkach wyłączamy mandatory snap, żeby nie "skakało" przy czytaniu długich tekstów */
-            .scroll-wrapper { scroll-snap-type: y proximity; }
+            html { scroll-padding-top: 100px; }
+
+            /* --- POPRAWKI LOGO DLA MOBILE --- */
+            .logo {
+                width: 100%;
+                justify-content: center; /* Wyśrodkowanie kontenera */
+            }
+
+            .logo-short {
+                left: 50%; /* Przesunięcie do środka */
+                transform: translateX(-50%) translateY(10px); /* Korekta środka i pozycji startowej */
+            }
+
+            /* Stan skrócony na mobile */
+            .logo.shrunk .logo-short {
+                transform: translateX(-50%) translateY(0); /* Wyśrodkowane i na miejscu */
+            }
         }
     </style>
 </head>
@@ -193,7 +236,11 @@
 <header>
     <div class="container">
         <nav>
-            <div class="logo">Studio Działań: Od Kulis</div>
+            <div class="logo">
+                <span class="logo-full">Studio Działań : Od Kulis</span>
+                <span class="logo-short">SD:OK.PL</span>
+            </div>
+
             <div class="nav-links">
                 <a href="#hero">Start</a>
                 <a href="#o-warsztatach">Warsztaty</a>
@@ -205,7 +252,6 @@
 </header>
 
 <main class="scroll-wrapper">
-
     <section id="hero" class="hero container">
         <div class="hero-content">
             <span class="section-subtitle">Edukacja Medialna</span>
@@ -244,7 +290,6 @@
             <span class="section-subtitle">Eksperci</span>
             <h2>Kadra szkoleniowa</h2>
             <p style="max-width: 600px; color: #ccc; margin-bottom: 20px;">Praktycy z doświadczeniem w NCKF, telewizji i postprodukcji.</p>
-
             <div class="team-grid">
                 <div class="member-card">
                     <img src="imgs/piotr.png" alt="Piotr Jagusiak">
@@ -297,7 +342,6 @@
                     <input type="hidden" name="_subject" value="Nowe zgłoszenie SDOK">
                     <input type="hidden" name="_next" value="http://sdok.pl">
                     <input type="hidden" name="_captcha" value="false">
-
                     <div class="form-group">
                         <label for="name">Imię i nazwisko</label>
                         <input type="text" name="name" id="name" required>
@@ -313,7 +357,7 @@
                     <button type="submit" class="btn" style="width: 100%;">Wyślij zapytanie</button>
                 </form>
                 <div style="margin-top: 20px; font-size: 0.9rem; color: var(--gray-dark);">
-                    <p><strong>Studio Działań: Od Kulis</strong> | email: kontakt@sdok.pl</p>
+                    <p><strong>Studio Działań : Od Kulis</strong> | email: kontakt@sdok.pl</p>
                 </div>
             </div>
         </div>
@@ -324,21 +368,23 @@
             <p>&copy; 2026 SDOK.pl. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
-
 </main>
 
 <script>
+    // --- SCROLL NAVIGATION ---
     function scrollToSection(selector) {
         const wrapper = document.querySelector('.scroll-wrapper');
         const target = document.querySelector(selector);
+        if (!target) return;
 
-        if (wrapper && target) {
+        if (window.innerWidth <= 768) {
+            const headerOffset = 100;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        } else {
             const topPos = target.offsetTop;
-            // Usunąłem korekty offsetów - teraz po prostu scrolluje do początku sekcji
-            wrapper.scrollTo({
-                top: topPos,
-                behavior: 'smooth'
-            });
+            wrapper.scrollTo({ top: topPos, behavior: 'smooth' });
         }
     }
 
@@ -349,6 +395,40 @@
             if (targetId === '#') return;
             scrollToSection(targetId);
         });
+    });
+
+    // --- LOGO MORPHING SCRIPT ---
+    const logoContainer = document.querySelector('.logo');
+    const scrollWrapper = document.querySelector('.scroll-wrapper');
+
+    function checkLogo(scrollY) {
+        // Próg scrollowania po którym zmienia się logo (100px)
+        if (scrollY > 100) {
+            logoContainer.classList.add('shrunk');
+        } else {
+            logoContainer.classList.remove('shrunk');
+        }
+    }
+
+    // Nasłuchiwanie dla Desktopu (na wrapperze)
+    if (scrollWrapper) {
+        scrollWrapper.addEventListener('scroll', () => {
+            checkLogo(scrollWrapper.scrollTop);
+        });
+    }
+
+    // Nasłuchiwanie dla Mobile (na oknie)
+    window.addEventListener('scroll', () => {
+        checkLogo(window.scrollY);
+    });
+
+    // Sprawdzenie na starcie (np. po odświeżeniu strony w połowie)
+    window.addEventListener('load', () => {
+        if (window.innerWidth <= 768) {
+            checkLogo(window.scrollY);
+        } else if (scrollWrapper) {
+            checkLogo(scrollWrapper.scrollTop);
+        }
     });
 </script>
 
