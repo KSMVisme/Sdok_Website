@@ -6,7 +6,7 @@
     <title>Studio Działań: Od Kulis | Warsztaty Medialne</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ZMIENNE I RESET (Bez zmian) --- */
+        /* --- ZMIENNE --- */
         :root {
             --bg-color: #ffffff;
             --text-color: #1a1a1a;
@@ -14,26 +14,74 @@
             --gray-light: #f4f4f4;
             --gray-dark: #666666;
             --container-width: 1100px;
+            --header-height: 80px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
+        /* Blokada przewijania dla body - przewija się tylko wrapper */
+        html, body {
+            height: 100%;
+            overflow: hidden;
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
             background-color: var(--bg-color);
-            line-height: 1.6;
             font-size: 16px;
         }
 
         img { max-width: 100%; display: block; border-radius: 4px; }
 
-        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* --- HEADER (FIXED) --- */
+        header {
+            height: var(--header-height);
+            width: 100%;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: fixed; /* Zawsze na wierzchu */
+            top: 0;
+            left: 0;
+            background: rgba(255,255,255,0.95); /* Lekka przezroczystość */
+            backdrop-filter: blur(5px); /* Efekt rozmycia tła pod menu */
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        nav { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; text-transform: uppercase; }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-color); font-size: 0.9rem; }
+
+        /* --- SCROLL SNAP CONTAINER --- */
+        .scroll-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* --- SEKCJE (POPRAWIONE) --- */
+        section {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            /* USUNIĘTO PADDING I MARGIN - brak "luzu" */
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centrowanie pionowe treści */
+        }
 
         /* --- TYPOGRAFIA --- */
         h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
         h1 { font-size: 3rem; letter-spacing: -1px; }
-        h2 { font-size: 2.2rem; margin-bottom: 2rem; }
+        h2 { font-size: 2.5rem; margin-bottom: 2rem; }
         h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 
         .section-subtitle {
@@ -46,7 +94,6 @@
             display: block;
         }
 
-        /* --- UI ELEMENTS --- */
         .btn {
             display: inline-block;
             background-color: var(--text-color);
@@ -56,80 +103,88 @@
             font-weight: 600;
             border-radius: 2px;
             transition: background 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
         .btn:hover { background-color: var(--accent-color); }
 
-        /* --- HEADER --- */
-        header {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--gray-light);
-            position: sticky;
-            top: 0;
-            background: rgba(255,255,255,0.95);
-            z-index: 100;
+        /* --- HERO --- */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-content: center;
+            /* Opcjonalnie: padding boczny, żeby treść nie dotykała krawędzi na ultra-szerokich ekranach,
+               ale container to załatwia. */
         }
 
-        nav { display: flex; justify-content: space-between; align-items: center; }
-
-        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; text-transform: uppercase; }
-
-        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-color); font-size: 0.9rem; }
-
-        /* --- HERO SECTION --- */
-        .hero { padding: 100px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
         .hero-content p { font-size: 1.2rem; color: var(--gray-dark); margin-bottom: 2rem; max-width: 480px; }
-        .hero-image { background-color: var(--gray-light); height: 400px; display: flex; align-items: center; justify-content: center; color: var(--gray-dark); }
 
-        /* --- O WARSZTATACH --- */
-        .about { padding: 80px 0; background-color: var(--gray-light); }
+        /* Zdjęcie Hero - pełne wypełnienie kontenera */
+        .hero-image {
+            height: 400px;
+            width: 100%;
+        }
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- INNE SEKCJE --- */
+        .about { background-color: var(--gray-light); }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
         .feature-card { background: #fff; padding: 30px; border: 1px solid #eee; }
 
-        /* --- TEAM (Zaktualizowany styl) --- */
-        .team { padding: 80px 0; background-color: #111; color: #fff; }
+        .team { background-color: #111; color: #fff; }
         .team h2 { color: #fff; }
-        .team .section-subtitle { color: var(--accent-color); }
         .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 40px; }
 
         .member-card img {
             width: 100%;
-            aspect-ratio: 1 / 1; /* WYMUSZENIE KWADRATU */
+            aspect-ratio: 1 / 1;
             object-fit: cover;
             background-color: #333;
             margin-bottom: 15px;
-            /* USUNIĘTO GRAYSCALE I TRANSITION */
         }
-
         .member-role { color: #999; font-size: 0.9rem; margin-bottom: 10px; display: block; }
         .member-bio { font-size: 0.85rem; color: #ccc; line-height: 1.5; }
 
-        /* --- AGENDA --- */
-        .tech { padding: 80px 0; }
         .tech-list { list-style: none; margin-top: 20px; }
-        .tech-list li { padding: 10px 0; border-bottom: 1px solid var(--gray-light); display: flex; align-items: center; }
+        .tech-list li { padding: 15px 0; border-bottom: 1px solid var(--gray-light); display: flex; align-items: center; }
         .tech-list li::before { content: "•"; color: var(--accent-color); font-size: 2rem; line-height: 0; margin-right: 15px; }
 
-        /* --- KONTAKT --- */
-        .contact { padding: 80px 0; text-align: center; }
+        .contact { text-align: center; }
         .contact-form { max-width: 500px; margin: 40px auto 0; text-align: left; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; font-family: inherit; }
 
-        footer { padding: 40px 0; border-top: 1px solid var(--gray-light); text-align: center; font-size: 0.8rem; color: var(--gray-dark); }
+        footer {
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            scroll-snap-align: end;
+            background: #fff;
+        }
 
+        /* --- RESPONSYWNOŚĆ --- */
         @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding: 60px 0; }
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                /* Na mobilkach dodajemy padding, bo header zajmuje relatywnie więcej miejsca */
+                padding-top: 100px;
+            }
+            .hero-image { width: 100%; height: auto; max-height: 300px; margin-top: 20px;}
             nav { flex-direction: column; gap: 10px; }
-        }
-        /* --- PŁYNNE PRZEWIJANIE (SMOOTH SCROLL) --- */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* --- POPRAWKA NA PRZYKLEJONE MENU --- */
-        section, footer {
-            scroll-margin-top: 100px;
+            h1 { font-size: 2.2rem; }
+            /* Na mobilkach wyłączamy mandatory snap, żeby nie "skakało" przy czytaniu długich tekstów */
+            .scroll-wrapper { scroll-snap-type: y proximity; }
         }
     </style>
 </head>
@@ -140,6 +195,7 @@
         <nav>
             <div class="logo">Studio Działań: Od Kulis</div>
             <div class="nav-links">
+                <a href="#hero">Start</a>
                 <a href="#o-warsztatach">Warsztaty</a>
                 <a href="#zespol">Zespół</a>
                 <a href="#kontakt">Kontakt</a>
@@ -148,148 +204,150 @@
     </div>
 </header>
 
-<section class="hero container">
-    <div class="hero-content">
-        <span class="section-subtitle">Edukacja Medialna</span>
-        <h1>Zostań twórcą telewizji na żywo.</h1>
-        <p>Praktyczne warsztaty w profesjonalnym studiu. Od koncepcji, przez obsługę kamer i mikserów ATEM, aż po realizację programu na żywo.</p>
-        <a href="#kontakt" class="btn">Zarezerwuj termin</a>
-    </div>
-    <div class="hero-image">
-        [Zdjęcie: Widok na studio telewizyjne z greenscreenem i kamerami]
-    </div>
-</section>
+<main class="scroll-wrapper">
 
-<section id="o-warsztatach" class="about">
-    <div class="container">
-        <span class="section-subtitle">Koncepcja</span>
-        <h2>Realne doświadczenie</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <h3>Symulacja Redakcji</h3>
-                <p>Dynamiczna praca w czasie rzeczywistym. Uczestnicy wcielają się w role prezenterów, reporterów i realizatorów.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Technologia</h3>
-                <p>Obsługa profesjonalnych narzędzi: pulpity ATEM, vMix oraz techniki pracy z greenscreenem.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Efekt Końcowy</h3>
-                <p>Gotowy materiał wideo, w którym uczestnicy są twórcami i bohaterami. Uczymy świadomego budowania przekazu.</p>
+    <section id="hero" class="hero container">
+        <div class="hero-content">
+            <span class="section-subtitle">Edukacja Medialna</span>
+            <h1>Zostań twórcą telewizji na żywo.</h1>
+            <p>Praktyczne warsztaty w profesjonalnym studiu. Od koncepcji, przez obsługę kamer i mikserów ATEM, aż po realizację programu na żywo.</p>
+            <button onclick="scrollToSection('#kontakt')" class="btn">Zarezerwuj termin</button>
+        </div>
+        <div class="hero-image">
+            <img src="imgs/welcome.png" alt="Studio telewizyjne SDOK">
+        </div>
+    </section>
+
+    <section id="o-warsztatach" class="about">
+        <div class="container">
+            <span class="section-subtitle">Koncepcja</span>
+            <h2>Realne doświadczenie</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Symulacja Redakcji</h3>
+                    <p>Dynamiczna praca w czasie rzeczywistym. Uczestnicy wcielają się w role prezenterów, reporterów i realizatorów.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Technologia</h3>
+                    <p>Obsługa profesjonalnych narzędzi: pulpity ATEM, vMix oraz techniki pracy z greenscreenem.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Efekt Końcowy</h3>
+                    <p>Gotowy materiał wideo, w którym uczestnicy są twórcami i bohaterami. Uczymy świadomego budowania przekazu.</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section id="zespol" class="team">
-    <div class="container">
-        <span class="section-subtitle">Eksperci</span>
-        <h2>Kadra szkoleniowa</h2>
-        <p style="max-width: 600px; color: #ccc;">Praktycy z doświadczeniem w NCKF, telewizji i postprodukcji.</p>
+    <section id="zespol" class="team">
+        <div class="container">
+            <span class="section-subtitle">Eksperci</span>
+            <h2>Kadra szkoleniowa</h2>
+            <p style="max-width: 600px; color: #ccc; margin-bottom: 20px;">Praktycy z doświadczeniem w NCKF, telewizji i postprodukcji.</p>
 
-        <div class="team-grid">
-
-            <div class="member-card">
-                <img src="/imgs/piotr.png" alt="Piotr Jagusiak">
-                <h3>Piotr Jagusiak</h3>
-                <span class="member-role">Główny Realizator</span>
-                <p class="member-bio">Mózg operacji. Odpowiada za "spinanie" całego programu w całość przy użyciu mikserów wizyjnych ATEM i vMix. Uczy panowania nad chaosem w reżyserce i koordynacji zespołu.</p>
-            </div>
-
-            <div class="member-card">
-                <img src="/imgs/szymon-z.png" alt="Szymon Zygma">
-                <h3>Szymon Zygma</h3>
-                <span class="member-role">Prezenter & Dziennikarz</span>
-                <p class="member-bio">Twarz studia. Specjalista od wystąpień publicznych i pracy z kamerą. Podczas warsztatów szkoli z czytania z promptera, dykcji oraz radzenia sobie ze stresem na wizji.</p>
-            </div>
-
-            <div class="member-card">
-                <img src="/imgs/szymon-k.png" alt="Szymon Kosmowski">
-                <h3>Szymon Kosmowski</h3>
-                <span class="member-role">Realizacja Dźwięku</span>
-                <p class="member-bio">Dba o to, by każde słowo było krystalicznie czyste. Ekspert od mikroportów, systemów bezprzewodowych i miksu audio. Uczy, jak unikać sprzężeń i budować tło dźwiękowe.</p>
-            </div>
-
-            <div class="member-card">
-                <img src="/imgs/emilian.png" alt="Emilian Szopa">
-                <h3>Emilian Szopa</h3>
-                <span class="member-role">Oświetlenie & Obraz</span>
-                <p class="member-bio">Mistrz atmosfery. Odpowiada za plany oświetleniowe i poprawną ekspozycję kamer. Na warsztatach pokazuje, jak światłem zmienić nastrój sceny i idealnie wykluczować greenscreen.</p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<section class="tech container">
-    <span class="section-subtitle">Plan działania</span>
-    <h2>Przebieg warsztatu</h2>
-    <ul class="tech-list">
-        <li><strong>09:00 - 10:00</strong>: Wprowadzenie i podział ról.</li>
-        <li><strong>10:00 - 12:00</strong>: Szkolenie stanowiskowe (ATEM, kamery, dźwięk, prompter).</li>
-        <li><strong>12:00 - 13:00</strong>: Próba generalna "na sucho".</li>
-        <li><strong>13:00 - 14:30</strong>: Realizacja programu LIVE – nagranie.</li>
-        <li><strong>14:30 - 15:00</strong>: Debriefing i analiza materiału.</li>
-    </ul>
-</section>
-
-<section id="kontakt" class="contact">
-    <div class="container">
-        <span class="section-subtitle">Dołącz do nas</span>
-        <h2>Skontaktuj się</h2>
-        <div class="contact-form">
-            <form action="https://formsubmit.co/kontakt@sdok.pl" method="POST">
-                <input type="hidden" name="_subject" value="Nowe zgłoszenie ze strony SDOK.pl">
-                <input type="hidden" name="_next" value="http://sdok.pl">
-                <input type="hidden" name="_captcha" value="false">
-
-                <div class="form-group">
-                    <label for="name">Imię i nazwisko</label>
-                    <input type="text" name="name" id="name" placeholder="Jan Kowalski" required>
+            <div class="team-grid">
+                <div class="member-card">
+                    <img src="imgs/piotr.png" alt="Piotr Jagusiak">
+                    <h3>Piotr Jagusiak</h3>
+                    <span class="member-role">Główny Realizator</span>
+                    <p class="member-bio">Mózg operacji. Odpowiada za "spinanie" programu przy użyciu ATEM i vMix.</p>
                 </div>
-                <div class="form-group">
-                    <label for="email">Adres e-mail</label>
-                    <input type="email" name="email" id="email" placeholder="jan@przyklad.pl" required>
+                <div class="member-card">
+                    <img src="imgs/szymon-z.png" alt="Szymon Zygma">
+                    <h3>Szymon Zygma</h3>
+                    <span class="member-role">Prezenter</span>
+                    <p class="member-bio">Specjalista od wystąpień publicznych. Uczy pracy z prompterem i kamerą.</p>
                 </div>
-                <div class="form-group">
-                    <label for="message">Wiadomość</label>
-                    <textarea name="message" id="message" rows="5" placeholder="Treść wiadomości..." required></textarea>
+                <div class="member-card">
+                    <img src="imgs/szymon-k.png" alt="Szymon Kosmowski">
+                    <h3>Szymon Kosmowski</h3>
+                    <span class="member-role">Realizacja Dźwięku</span>
+                    <p class="member-bio">Ekspert od mikroportów. Uczy jak unikać sprzężeń i budować tło dźwiękowe.</p>
                 </div>
-                <button type="submit" class="btn" style="width: 100%;">Wyślij zapytanie</button>
-            </form>
-            <div style="margin-top: 30px; font-size: 0.9rem; color: var(--gray-dark);">
-                <p><strong>Studio Działań: Od Kulis</strong></p>
-                <p>email: kontakt@sdok.pl</p>
+                <div class="member-card">
+                    <img src="imgs/emilian.png" alt="Emilian Szopa">
+                    <h3>Emilian Szopa</h3>
+                    <span class="member-role">Obraz</span>
+                    <p class="member-bio">Mistrz atmosfery. Odpowiada za plany oświetleniowe i kluczowanie greenscreenu.</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<footer>
-    <div class="container">
-        <p>&copy; 2026 SDOK.pl. Wszelkie prawa zastrzeżone.</p>
-    </div>
-</footer>
+    <section class="tech">
+        <div class="container">
+            <span class="section-subtitle">Plan działania</span>
+            <h2>Przebieg warsztatu</h2>
+            <ul class="tech-list">
+                <li><strong>09:00 - 10:00</strong>: Wprowadzenie i podział ról.</li>
+                <li><strong>10:00 - 12:00</strong>: Szkolenie stanowiskowe (ATEM, kamery, dźwięk, prompter).</li>
+                <li><strong>12:00 - 13:00</strong>: Próba generalna "na sucho".</li>
+                <li><strong>13:00 - 14:30</strong>: Realizacja programu LIVE – nagranie.</li>
+                <li><strong>14:30 - 15:00</strong>: Debriefing i analiza materiału.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="kontakt" class="contact">
+        <div class="container">
+            <span class="section-subtitle">Dołącz do nas</span>
+            <h2>Skontaktuj się</h2>
+            <div class="contact-form">
+                <form action="https://formsubmit.co/kontakt@sdok.pl" method="POST">
+                    <input type="hidden" name="_subject" value="Nowe zgłoszenie SDOK">
+                    <input type="hidden" name="_next" value="http://sdok.pl">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div class="form-group">
+                        <label for="name">Imię i nazwisko</label>
+                        <input type="text" name="name" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Wiadomość</label>
+                        <textarea name="message" id="message" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Wyślij zapytanie</button>
+                </form>
+                <div style="margin-top: 20px; font-size: 0.9rem; color: var(--gray-dark);">
+                    <p><strong>Studio Działań: Od Kulis</strong> | email: kontakt@sdok.pl</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 SDOK.pl. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+</main>
 
 <script>
+    function scrollToSection(selector) {
+        const wrapper = document.querySelector('.scroll-wrapper');
+        const target = document.querySelector(selector);
+
+        if (wrapper && target) {
+            const topPos = target.offsetTop;
+            // Usunąłem korekty offsetów - teraz po prostu scrolluje do początku sekcji
+            wrapper.scrollTo({
+                top: topPos,
+                behavior: 'smooth'
+            });
+        }
+    }
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerOffset = 100;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-            }
+            scrollToSection(targetId);
         });
     });
 </script>
