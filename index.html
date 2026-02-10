@@ -92,11 +92,14 @@
         .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 40px; }
 
         .member-card img {
-            width: 100%; height: 300px; object-fit: cover;
-            background-color: #333; margin-bottom: 15px;
-            filter: grayscale(100%); transition: filter 0.3s;
+            width: 100%;
+            aspect-ratio: 1 / 1; /* WYMUSZENIE KWADRATU */
+            object-fit: cover;
+            background-color: #333;
+            margin-bottom: 15px;
+            /* USUNIĘTO GRAYSCALE I TRANSITION */
         }
-        .member-card:hover img { filter: grayscale(0%); }
+
         .member-role { color: #999; font-size: 0.9rem; margin-bottom: 10px; display: block; }
         .member-bio { font-size: 0.85rem; color: #ccc; line-height: 1.5; }
 
@@ -125,7 +128,6 @@
         }
 
         /* --- POPRAWKA NA PRZYKLEJONE MENU --- */
-        /* Dzięki temu nagłówki nie chowają się pod paskiem nawigacji po kliknięciu */
         section, footer {
             scroll-margin-top: 100px;
         }
@@ -238,9 +240,7 @@
         <div class="contact-form">
             <form action="https://formsubmit.co/kontakt@sdok.pl" method="POST">
                 <input type="hidden" name="_subject" value="Nowe zgłoszenie ze strony SDOK.pl">
-
                 <input type="hidden" name="_next" value="http://sdok.pl">
-
                 <input type="hidden" name="_captcha" value="false">
 
                 <div class="form-group">
@@ -277,11 +277,10 @@
             e.preventDefault();
 
             const targetId = this.getAttribute('href');
-            if (targetId === '#') return; // Ignoruj puste linki
+            if (targetId === '#') return;
 
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                // Obliczamy pozycję z uwzględnieniem wysokości Twojego menu (ok. 80px + 20px odstępu)
                 const headerOffset = 100;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.scrollY - headerOffset;
