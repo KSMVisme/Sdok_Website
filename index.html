@@ -119,6 +119,16 @@
             .hero { grid-template-columns: 1fr; text-align: center; padding: 60px 0; }
             nav { flex-direction: column; gap: 10px; }
         }
+        /* --- PŁYNNE PRZEWIJANIE (SMOOTH SCROLL) --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* --- POPRAWKA NA PRZYKLEJONE MENU --- */
+        /* Dzięki temu nagłówki nie chowają się pod paskiem nawigacji po kliknięciu */
+        section, footer {
+            scroll-margin-top: 100px;
+        }
     </style>
 </head>
 <body>
@@ -226,20 +236,26 @@
         <span class="section-subtitle">Dołącz do nas</span>
         <h2>Skontaktuj się</h2>
         <div class="contact-form">
-            <form>
+            <form action="https://formsubmit.co/kontakt@sdok.pl" method="POST">
+                <input type="hidden" name="_subject" value="Nowe zgłoszenie ze strony SDOK.pl">
+
+                <input type="hidden" name="_next" value="http://sdok.pl">
+
+                <input type="hidden" name="_captcha" value="false">
+
                 <div class="form-group">
                     <label for="name">Imię i nazwisko</label>
-                    <input type="text" id="name">
+                    <input type="text" name="name" id="name" placeholder="Jan Kowalski" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email">
+                    <label for="email">Adres e-mail</label>
+                    <input type="email" name="email" id="email" placeholder="jan@przyklad.pl" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Wiadomość</label>
-                    <textarea id="message" rows="5"></textarea>
+                    <textarea name="message" id="message" rows="5" placeholder="Treść wiadomości..." required></textarea>
                 </div>
-                <button type="submit" class="btn" style="width: 100%;">Wyślij</button>
+                <button type="submit" class="btn" style="width: 100%;">Wyślij zapytanie</button>
             </form>
             <div style="margin-top: 30px; font-size: 0.9rem; color: var(--gray-dark);">
                 <p><strong>Studio Działań: Od Kulis</strong></p>
@@ -251,9 +267,33 @@
 
 <footer>
     <div class="container">
-        <p>&copy; 2024 SDOK.pl. Wszelkie prawa zastrzeżone.</p>
+        <p>&copy; 2026 SDOK.pl. Wszelkie prawa zastrzeżone.</p>
     </div>
 </footer>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return; // Ignoruj puste linki
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Obliczamy pozycję z uwzględnieniem wysokości Twojego menu (ok. 80px + 20px odstępu)
+                const headerOffset = 100;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
