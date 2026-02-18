@@ -1,0 +1,483 @@
+ :root {
+     --bg-color: #ffffff;
+     --text-color: #1a1a1a;
+     --accent-color: #cb2323;
+     --gray-light: #f4f4f4;
+     --gray-dark: #666666;
+     --container-width: 1100px;
+     --header-height: 80px;
+ }
+
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ html,
+ body {
+     height: 100%;
+     overflow: hidden;
+     font-family: 'Inter', sans-serif;
+     color: var(--text-color);
+     background-color: var(--bg-color);
+     font-size: 16px;
+ }
+
+ img {
+     max-width: 100%;
+     display: block;
+     border-radius: 4px;
+ }
+
+ .container {
+     max-width: var(--container-width);
+     margin: 0 auto;
+     padding: 0 20px;
+     width: 100%;
+ }
+
+ /* --- HEADER (FIXED) --- */
+ header {
+     height: var(--header-height);
+     width: 100%;
+     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+     position: fixed;
+     top: 0;
+     left: 0;
+     background: rgba(255, 255, 255, 0.98);
+     backdrop-filter: blur(5px);
+     z-index: 1000;
+     display: flex;
+     align-items: center;
+     transition: all 0.3s ease;
+ }
+
+ nav {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     width: 100%;
+ }
+
+ /* --- LOGO ANIMOWANE (POPRAWIONE) --- */
+ .logo {
+     font-weight: 800;
+     font-size: 1.3rem;
+     letter-spacing: -0.5px;
+     text-transform: uppercase;
+     position: relative;
+     display: flex;
+     align-items: center;
+     height: 40px;
+     /* Stała wysokość */
+     min-width: 150px;
+     /* Rezerwujemy miejsce */
+ }
+
+ .logo span {
+     display: block;
+     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+     /* Płynne przejście */
+     white-space: nowrap;
+ }
+
+ /* DŁUGIE LOGO (Domyślnie widoczne) */
+ .logo-full {
+     opacity: 1;
+     transform: translateY(0);
+     position: relative;
+     /* Pozostaje w przepływie */
+ }
+
+ /* KRÓTKIE LOGO (Domyślnie ukryte) */
+ .logo-short {
+     position: absolute;
+     left: 0;
+     /* Na desktopie wyrównane do lewej */
+     opacity: 0;
+     transform: translateY(10px);
+     /* Lekko w dół */
+     pointer-events: none;
+     /* Nieklikalne gdy ukryte */
+     color: var(--accent-color);
+     /* Opcjonalnie: wyróżnienie kolorem */
+ }
+
+ /* --- STAN .SHRUNK (Przewinięty) --- */
+
+ /* Ukrywamy długie */
+ .logo.shrunk .logo-full {
+     opacity: 0;
+     transform: translateY(-10px);
+     /* Ucieka w górę */
+     pointer-events: none;
+ }
+
+ /* Pokazujemy krótkie */
+ .logo.shrunk .logo-short {
+     opacity: 1;
+     transform: translateY(0);
+     /* Wjeżdża na miejsce */
+     pointer-events: auto;
+ }
+
+ .nav-links a {
+     margin-left: 20px;
+     text-decoration: none;
+     color: var(--text-color);
+     font-size: 0.9rem;
+ }
+
+ /* --- SCROLL WRAPPER --- */
+ .scroll-wrapper {
+     height: 100vh;
+     overflow-y: auto;
+     overflow-x: hidden;
+     scroll-snap-type: y mandatory;
+     scroll-behavior: smooth;
+ }
+
+ section {
+     min-height: 100vh;
+     scroll-snap-align: start;
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+ }
+
+ /* --- TYPOGRAFIA I UI --- */
+ h1,
+ h2,
+ h3 {
+     font-weight: 700;
+     line-height: 1.2;
+     margin-bottom: 1rem;
+ }
+
+ h1 {
+     font-size: 3rem;
+     letter-spacing: -1px;
+ }
+
+ h2 {
+     font-size: 2.5rem;
+     margin-bottom: 2rem;
+ }
+
+ h3 {
+     font-size: 1.2rem;
+     margin-bottom: 0.5rem;
+ }
+
+ .section-subtitle {
+     text-transform: uppercase;
+     font-size: 0.85rem;
+     letter-spacing: 2px;
+     color: var(--accent-color);
+     font-weight: 600;
+     margin-bottom: 1rem;
+     display: block;
+ }
+
+ .btn {
+     display: inline-block;
+     background-color: var(--text-color);
+     color: #fff;
+     padding: 12px 28px;
+     text-decoration: none;
+     font-weight: 600;
+     border-radius: 2px;
+     transition: background 0.3s ease;
+     cursor: pointer;
+     border: none;
+ }
+
+ .btn:hover {
+     background-color: var(--accent-color);
+ }
+
+ /* --- HERO --- */
+ .hero {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 40px;
+     align-content: center;
+ }
+
+ .hero-content p {
+     font-size: 1.2rem;
+     color: var(--gray-dark);
+     margin-bottom: 2rem;
+     max-width: 480px;
+ }
+
+ .hero-image {
+     height: 400px;
+     width: 100%;
+     position: relative;
+ }
+
+ .hero-image img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+     position: absolute;
+     top: 0;
+     left: 0;
+     opacity: 0;
+     transition: opacity 1s ease-in-out;
+ }
+
+ .hero-image img.active {
+     opacity: 1;
+ }
+
+ /* --- KARUZELA NAWIGACJA --- */
+ .carousel-btn {
+     position: absolute;
+     top: 50%;
+     transform: translateY(-50%);
+     background: rgba(0, 0, 0, 0.3);
+     color: white;
+     border: none;
+     width: 40px;
+     height: 40px;
+     border-radius: 50%;
+     cursor: pointer;
+     z-index: 10;
+     font-size: 1.2rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: background 0.3s ease;
+ }
+
+ .carousel-btn:hover {
+     background: rgba(0, 0, 0, 0.7);
+ }
+
+ .carousel-btn.prev {
+     left: 10px;
+ }
+
+ .carousel-btn.next {
+     right: 10px;
+ }
+
+ .carousel-dots {
+     position: absolute;
+     bottom: 15px;
+     left: 50%;
+     transform: translateX(-50%);
+     display: flex;
+     gap: 8px;
+     z-index: 10;
+ }
+
+ .dot {
+     width: 10px;
+     height: 10px;
+     background: rgba(255, 255, 255, 0.5);
+     border-radius: 50%;
+     cursor: pointer;
+     transition: all 0.3s ease;
+ }
+
+ .dot.active {
+     background: white;
+     transform: scale(1.2);
+ }
+
+ /* --- INNE SEKCJE --- */
+ .about {
+     background-color: var(--gray-light);
+ }
+
+ .features-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+     gap: 40px;
+ }
+
+ .feature-card {
+     background: #fff;
+     padding: 30px;
+     border: 1px solid #eee;
+ }
+
+ .team {
+     background-color: #111;
+     color: #fff;
+ }
+
+ .team h2 {
+     color: #fff;
+ }
+
+ .team-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+     gap: 30px;
+     margin-top: 40px;
+ }
+
+ .member-card img {
+     width: 100%;
+     aspect-ratio: 1 / 1;
+     object-fit: cover;
+     background-color: #333;
+     margin-bottom: 15px;
+ }
+
+ .member-role {
+     color: #999;
+     font-size: 0.9rem;
+     margin-bottom: 10px;
+     display: block;
+ }
+
+ .member-bio {
+     font-size: 0.85rem;
+     color: #ccc;
+     line-height: 1.5;
+ }
+
+ .tech-list {
+     list-style: none;
+     margin-top: 20px;
+ }
+
+ .tech-list li {
+     padding: 15px 0;
+     border-bottom: 1px solid var(--gray-light);
+     display: flex;
+     align-items: center;
+ }
+
+ .tech-list li::before {
+     content: "•";
+     color: var(--accent-color);
+     font-size: 2rem;
+     line-height: 0;
+     margin-right: 15px;
+ }
+
+ .contact {
+     text-align: center;
+ }
+
+ .contact-form {
+     max-width: 500px;
+     margin: 40px auto 0;
+     text-align: left;
+ }
+
+ .form-group {
+     margin-bottom: 20px;
+ }
+
+ .form-group label {
+     display: block;
+     margin-bottom: 5px;
+     font-size: 0.9rem;
+     font-weight: 600;
+ }
+
+ .form-group input,
+ .form-group textarea {
+     width: 100%;
+     padding: 12px;
+     border: 1px solid #ddd;
+     font-family: inherit;
+ }
+
+ footer {
+     padding: 20px 0;
+     text-align: center;
+     font-size: 0.8rem;
+     color: var(--gray-dark);
+     scroll-snap-align: end;
+     background: #fff;
+ }
+
+ /* --- MOBILE & TABLET (Poniżej 768px) --- */
+ @media (max-width: 768px) {
+
+     html,
+     body {
+         height: auto;
+         overflow-y: auto;
+         overflow-x: hidden;
+     }
+
+     .scroll-wrapper {
+         height: auto;
+         overflow: visible;
+         scroll-snap-type: none;
+     }
+
+     section {
+         min-height: auto;
+         height: auto;
+         scroll-snap-align: none;
+         padding-top: 80px;
+         padding-bottom: 60px;
+         display: block;
+     }
+
+     .hero {
+         padding-top: 140px;
+         grid-template-columns: 1fr;
+         text-align: center;
+         display: flex;
+         flex-direction: column;
+     }
+
+     .hero-image {
+         width: 90%;
+         height: 200px;
+         margin: 20px auto 0;
+     }
+
+     .member-card img {
+         width: 70%;
+         max-width: 250px;
+         margin: 0 auto 15px;
+     }
+
+     nav {
+         flex-direction: column;
+         gap: 10px;
+     }
+
+     h1 {
+         font-size: 2.2rem;
+     }
+
+     html {
+         scroll-padding-top: 100px;
+     }
+
+     /* --- POPRAWKI LOGO DLA MOBILE --- */
+     .logo {
+         width: 100%;
+         justify-content: center;
+         /* Wyśrodkowanie kontenera */
+     }
+
+     .logo-short {
+         left: 50%;
+         /* Przesunięcie do środka */
+         transform: translateX(-50%) translateY(10px);
+         /* Korekta środka i pozycji startowej */
+     }
+
+     /* Stan skrócony na mobile */
+     .logo.shrunk .logo-short {
+         transform: translateX(-50%) translateY(0);
+         /* Wyśrodkowane i na miejscu */
+     }
+ }
